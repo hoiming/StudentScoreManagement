@@ -4,11 +4,8 @@ import com.haiming.dao.*;
 import com.haiming.dao.Student;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.dynamic.sql.insert.render.InsertStatementProvider;
 import org.mybatis.dynamic.sql.render.RenderingStrategies;
-import org.mybatis.dynamic.sql.render.RenderingStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.Assert;
@@ -20,7 +17,8 @@ import java.text.SimpleDateFormat;
 import org.mybatis.dynamic.sql.SqlBuilder;
 import com.haiming.dao.StudentMapper;
 import static com.haiming.dao.StudentDynamicSqlSupport.*;
-import   com.haiming.dao.CourseDynamicSqlSupport;
+import com.haiming.dao.CourseDynamicSqlSupport;
+import com.haiming.dao.StudentCourseScoreDynamicSqlSupport;
 
 public class TestStudentDAO {
     private SqlSession sqlSession;
@@ -71,5 +69,24 @@ public class TestStudentDAO {
         CourseMapper mapper = sqlSession.getMapper(CourseMapper.class);
         int rows = mapper.insert(insertStatement);
         Assert.assertEquals(rows, 1, "Should insert one row into database.");
+    }
+
+    @Test
+    public void testInsertScoreIntoDB(){
+        StudentCourseScore record = new StudentCourseScore();
+        record.setCourseId(2);
+        record.setStudentId(2);
+        record.setScore(100);
+        StudentCourseScoreDynamicSqlSupport.StudentCourseScore scoreTable = new StudentCourseScoreDynamicSqlSupport.StudentCourseScore();
+        InsertStatementProvider<StudentCourseScore> insertStatement = SqlBuilder.insert(record).into(scoreTable)
+                .map(StudentCourseScoreDynamicSqlSupport.id).toProperty("id")
+                .map(StudentCourseScoreDynamicSqlSupport.courseId).toProperty("courseId")
+                .map(StudentCourseScoreDynamicSqlSupport.studentId).toProperty("studentId")
+                .map(StudentCourseScoreDynamicSqlSupport.score).toProperty("score")
+                .build()
+                .render(RenderingStrategies.MYBATIS3);
+        StudentCourseScoreMapper mapper = sqlSession.getMapper(StudentCourseScoreMapper.class);
+        int rows = mapper.insert(insertStatement);
+        Assert.assertEquals(rows, 1, "Should insert one row into Score table");
     }
 }

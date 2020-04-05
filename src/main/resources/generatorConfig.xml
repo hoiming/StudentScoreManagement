@@ -12,6 +12,6 @@
 
         <table tableName="student" />
         <table tableName="course" />
-        <table tableName="score" />
+        <table tableName="student_course_score" />
     </context>
 </generatorConfiguration>
