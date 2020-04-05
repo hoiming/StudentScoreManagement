@@ -4,8 +4,10 @@ import com.haiming.dao.*;
 import com.haiming.dao.Student;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.dynamic.sql.delete.render.DeleteStatementProvider;
 import org.mybatis.dynamic.sql.insert.render.InsertStatementProvider;
 import org.mybatis.dynamic.sql.render.RenderingStrategies;
+import org.mybatis.dynamic.sql.where.condition.IsEqualTo;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.Assert;
@@ -17,10 +19,12 @@ import java.text.SimpleDateFormat;
 import org.mybatis.dynamic.sql.SqlBuilder;
 import com.haiming.dao.StudentMapper;
 import static com.haiming.dao.StudentDynamicSqlSupport.*;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+
 import com.haiming.dao.CourseDynamicSqlSupport;
 import com.haiming.dao.StudentCourseScoreDynamicSqlSupport;
 
-public class TestStudentDAO {
+public class TestDAOCRUD {
     private SqlSession sqlSession;
     private ApplicationContext context;
     @BeforeMethod
@@ -88,5 +92,17 @@ public class TestStudentDAO {
         StudentCourseScoreMapper mapper = sqlSession.getMapper(StudentCourseScoreMapper.class);
         int rows = mapper.insert(insertStatement);
         Assert.assertEquals(rows, 1, "Should insert one row into Score table");
+    }
+
+    @Test
+    public void testDeleteStudent(){
+        StudentDynamicSqlSupport.Student studentTable = new StudentDynamicSqlSupport.Student();
+        DeleteStatementProvider deleteStatementProvider = SqlBuilder.deleteFrom(studentTable)
+                .where(StudentDynamicSqlSupport.id, isEqualTo(6))
+                .build()
+                .render(RenderingStrategies.MYBATIS3);
+        StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
+        int rows = mapper.deleteByPrimaryKey(6);
+        Assert.assertTrue(rows > 0);
     }
 }
