@@ -25,5 +25,5 @@
 
     <mybatis:scan base-package="com.haiming.dao"/>
     <context:annotation-config />
-    <context:component-scan base-package="foobar"/>
+    <context:component-scan base-package="com.haiming"/>
 </beans>
