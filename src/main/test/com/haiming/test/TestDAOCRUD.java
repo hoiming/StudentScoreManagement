@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.mybatis.dynamic.sql.delete.render.DeleteStatementProvider;
 import org.mybatis.dynamic.sql.insert.render.InsertStatementProvider;
 import org.mybatis.dynamic.sql.render.RenderingStrategies;
+import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.mybatis.dynamic.sql.where.condition.IsEqualTo;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -16,6 +17,8 @@ import org.testng.annotations.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Optional;
+
 import org.mybatis.dynamic.sql.SqlBuilder;
 import com.haiming.dao.StudentMapper;
 import static com.haiming.dao.StudentDynamicSqlSupport.*;
@@ -33,7 +36,7 @@ public class TestDAOCRUD {
         sqlSession = context.getBean("sqlSession", SqlSession.class);
     }
 
-    @Test
+    //@Test
     public void testInsertStudentToDB() throws ParseException {
         Student record = new Student();
         record.setName("梁海明" + RandomStringUtils.randomAlphabetic(5));
@@ -58,7 +61,7 @@ public class TestDAOCRUD {
         Assert.assertEquals(rows, 1, "Should insert one row into database.");
     }
 
-    @Test
+    //@Test
     public void insertCouseIntoDB(){
         Course record = new Course();
         record.setCoursename("计算机组成原理" + RandomStringUtils.randomAlphabetic(5));
@@ -75,7 +78,7 @@ public class TestDAOCRUD {
         Assert.assertEquals(rows, 1, "Should insert one row into database.");
     }
 
-    @Test
+    //@Test
     public void testInsertScoreIntoDB(){
         StudentCourseScore record = new StudentCourseScore();
         record.setCourseId(2);
@@ -94,7 +97,7 @@ public class TestDAOCRUD {
         Assert.assertEquals(rows, 1, "Should insert one row into Score table");
     }
 
-    @Test
+    //@Test
     public void testDeleteStudent(){
         StudentDynamicSqlSupport.Student studentTable = new StudentDynamicSqlSupport.Student();
         DeleteStatementProvider deleteStatementProvider = SqlBuilder.deleteFrom(studentTable)
@@ -104,5 +107,19 @@ public class TestDAOCRUD {
         StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
         int rows = mapper.deleteByPrimaryKey(6);
         Assert.assertTrue(rows > 0);
+    }
+
+    @Test
+    public void testSelectStudent(){
+        StudentDynamicSqlSupport.Student studentTable = new StudentDynamicSqlSupport.Student();
+        SelectStatementProvider selectStatementProvider =
+                SqlBuilder.select(id, address, birthday, gender, telephone, name)
+                    .from(studentTable)
+                    .where(id, isEqualTo(5))
+                    .build().render(RenderingStrategies.MYBATIS3);
+        StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
+        Optional<Student> student = mapper.selectOne(selectStatementProvider);
+        Assert.assertEquals(student.get().getName(), "梁海明SWSCT");
+
     }
 }
