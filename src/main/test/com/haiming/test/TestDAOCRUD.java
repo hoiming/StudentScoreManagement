@@ -21,7 +21,9 @@ import java.util.Optional;
 
 import org.mybatis.dynamic.sql.SqlBuilder;
 import com.haiming.dao.StudentMapper;
-import static com.haiming.dao.StudentDynamicSqlSupport.*;
+
+import  com.haiming.dao.StudentDynamicSqlSupport;
+import static org.mybatis.dynamic.sql.SqlBuilder.equalTo;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 import com.haiming.dao.CourseDynamicSqlSupport;
@@ -48,12 +50,12 @@ public class TestDAOCRUD {
         StudentDynamicSqlSupport.Student studentTable = new StudentDynamicSqlSupport.Student();
         InsertStatementProvider<Student> insertStatement =
                 SqlBuilder.insert(record).into(studentTable)
-                .map(id).toProperty("id")
-                .map(name).toProperty("name")
-                .map(address).toProperty("address")
-                .map(gender).toProperty("gender")
-                .map(birthday).toProperty("birthday")
-                .map(telephone).toProperty("telephone")
+                .map(StudentDynamicSqlSupport.id).toProperty("id")
+                .map(StudentDynamicSqlSupport.name).toProperty("name")
+                .map(StudentDynamicSqlSupport.address).toProperty("address")
+                .map(StudentDynamicSqlSupport.gender).toProperty("gender")
+                .map(StudentDynamicSqlSupport.birthday).toProperty("birthday")
+                .map(StudentDynamicSqlSupport.telephone).toProperty("telephone")
                 .build()
                 .render(RenderingStrategies.MYBATIS3);
         StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
@@ -109,17 +111,38 @@ public class TestDAOCRUD {
         Assert.assertTrue(rows > 0);
     }
 
-    @Test
+    //@Test
     public void testSelectStudent(){
         StudentDynamicSqlSupport.Student studentTable = new StudentDynamicSqlSupport.Student();
         SelectStatementProvider selectStatementProvider =
-                SqlBuilder.select(id, address, birthday, gender, telephone, name)
+                SqlBuilder.select(StudentDynamicSqlSupport.id, StudentDynamicSqlSupport.address,
+                        StudentDynamicSqlSupport.birthday, StudentDynamicSqlSupport.gender,
+                        StudentDynamicSqlSupport.telephone, StudentDynamicSqlSupport.name)
                     .from(studentTable)
-                    .where(id, isEqualTo(5))
+                    .where(StudentDynamicSqlSupport.id, isEqualTo(5))
                     .build().render(RenderingStrategies.MYBATIS3);
         StudentMapper mapper = sqlSession.getMapper(StudentMapper.class);
         Optional<Student> student = mapper.selectOne(selectStatementProvider);
         Assert.assertEquals(student.get().getName(), "梁海明SWSCT");
+
+    }
+
+    @Test
+    public void testSelectStudentCourseScoreUsingJoin(){
+            CourseDynamicSqlSupport.Course courseTable = new CourseDynamicSqlSupport.Course();
+            StudentCourseScoreDynamicSqlSupport.StudentCourseScore scsTable = new StudentCourseScoreDynamicSqlSupport.StudentCourseScore();
+            SelectStatementProvider selectStatementProvider =
+                    SqlBuilder.select(StudentCourseScoreDynamicSqlSupport.id, StudentCourseScoreDynamicSqlSupport.courseId,
+                            StudentCourseScoreDynamicSqlSupport.studentId, CourseDynamicSqlSupport.coursename, CourseDynamicSqlSupport.teachername,
+                            StudentCourseScoreDynamicSqlSupport.score)
+                            .from(courseTable)
+                            .join(scsTable).on(CourseDynamicSqlSupport.id, equalTo(scsTable.courseId))
+                            .where(CourseDynamicSqlSupport.id, isEqualTo(5))
+                            .build().render(RenderingStrategies.MYBATIS3);
+
+            StudentCourseScoreMapper mapper = sqlSession.getMapper(StudentCourseScoreMapper.class);
+            Optional<StudentCourseScoreFull> full = mapper.selectOneFullById(selectStatementProvider);
+            Assert.assertNotNull(full.get());
 
     }
 }

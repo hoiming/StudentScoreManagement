@@ -1,6 +1,9 @@
 package com.haiming.dao;
 
 import static com.haiming.dao.StudentCourseScoreDynamicSqlSupport.*;
+import static com.haiming.dao.StudentDynamicSqlSupport.*;
+import static com.haiming.dao.StudentDynamicSqlSupport.id;
+import static com.haiming.dao.StudentDynamicSqlSupport.name;
 import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
 import com.haiming.dao.StudentCourseScore;
@@ -18,10 +21,12 @@ import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.dynamic.sql.BasicColumn;
+import org.mybatis.dynamic.sql.SqlBuilder;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
 import org.mybatis.dynamic.sql.delete.render.DeleteStatementProvider;
 import org.mybatis.dynamic.sql.insert.render.InsertStatementProvider;
 import org.mybatis.dynamic.sql.insert.render.MultiRowInsertStatementProvider;
+import org.mybatis.dynamic.sql.render.RenderingStrategies;
 import org.mybatis.dynamic.sql.select.CountDSLCompleter;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
@@ -31,6 +36,8 @@ import org.mybatis.dynamic.sql.update.UpdateModel;
 import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
+import com.haiming.dao.StudentDynamicSqlSupport;
+import com.haiming.dao.CourseDynamicSqlSupport;
 
 @Mapper
 public interface StudentCourseScoreMapper {
@@ -57,6 +64,17 @@ public interface StudentCourseScoreMapper {
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
     @ResultMap("StudentCourseScoreResult")
     Optional<StudentCourseScore> selectOne(SelectStatementProvider selectStatement);
+
+    @SelectProvider(type=SqlProviderAdapter.class, method = "select")
+    @Results(id = "StudentCourseScoreFullResult", value =  {
+            @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="course_id", property="courseId", jdbcType=JdbcType.INTEGER),
+            @Result(column="student_id", property="studentId", jdbcType=JdbcType.INTEGER),
+            @Result(column="score", property="score", jdbcType=JdbcType.INTEGER),
+            @Result(column="coursename", property = "courseName", jdbcType = JdbcType.VARCHAR),
+            @Result(column="teachername", property = "teacherName", jdbcType = JdbcType.VARCHAR)
+    })
+    Optional<StudentCourseScoreFull> selectOneFullById(SelectStatementProvider selectStatement);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.2019481+08:00", comments="Source Table: student_course_score")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
