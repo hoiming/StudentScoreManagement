@@ -22,7 +22,15 @@ public class StudentCourseScoreFull extends StudentCourseScore{
         this.teacherName = teacherName;
     }
 
+    public String getStudentName() {
+        return studentName;
+    }
 
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    private String studentName;
 
 
 }

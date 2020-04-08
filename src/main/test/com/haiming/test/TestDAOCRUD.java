@@ -131,12 +131,14 @@ public class TestDAOCRUD {
     public void testSelectStudentCourseScoreUsingJoin(){
             CourseDynamicSqlSupport.Course courseTable = new CourseDynamicSqlSupport.Course();
             StudentCourseScoreDynamicSqlSupport.StudentCourseScore scsTable = new StudentCourseScoreDynamicSqlSupport.StudentCourseScore();
+            StudentDynamicSqlSupport.Student studentTable = new StudentDynamicSqlSupport.Student();
             SelectStatementProvider selectStatementProvider =
-                    SqlBuilder.select(StudentCourseScoreDynamicSqlSupport.id, StudentCourseScoreDynamicSqlSupport.courseId,
-                            StudentCourseScoreDynamicSqlSupport.studentId, CourseDynamicSqlSupport.coursename, CourseDynamicSqlSupport.teachername,
-                            StudentCourseScoreDynamicSqlSupport.score)
+                    SqlBuilder.select(scsTable.id, scsTable.courseId,
+                            scsTable.studentId, CourseDynamicSqlSupport.coursename, courseTable.teachername,
+                            scsTable.score, studentTable.name.as("studentName"))
                             .from(courseTable)
                             .join(scsTable).on(CourseDynamicSqlSupport.id, equalTo(scsTable.courseId))
+                            .join(studentTable).on(scsTable.studentId, equalTo(studentTable.id))
                             .where(CourseDynamicSqlSupport.id, isEqualTo(5))
                             .build().render(RenderingStrategies.MYBATIS3);
 
