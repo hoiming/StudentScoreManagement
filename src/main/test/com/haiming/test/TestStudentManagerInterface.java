@@ -1,14 +1,18 @@
 package com.haiming.test;
 
+import com.haiming.config.AppConfig;
+import com.haiming.config.TestConfig;
 import com.haiming.dao.Student;
 import com.haiming.interfaces.IStudentManager;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -18,14 +22,15 @@ import java.util.Random;
  * 可以通过priority指定testcase之间的执行顺序
  */
 @Test
-@ContextConfiguration(locations = {"classpath:spring-config.xml"})
+@ContextConfiguration(classes = TestConfig.class)
+//@ComponentScan(basePackages = {"com.haiming.services"})
 public class TestStudentManagerInterface extends AbstractTestNGSpringContextTests {
 
     @Autowired
     IStudentManager studentManager;
 
     @Test(priority = 0)
-    public void testInsertStudent(){
+    public void testInsertStudent() {
         Student student = new Student();
         student.setId(1);
         student.setName("foobar");
@@ -35,8 +40,9 @@ public class TestStudentManagerInterface extends AbstractTestNGSpringContextTest
         int rows = studentManager.CreateStudent(student);
         Assert.assertTrue(rows == 1);
     }
+
     @Test(priority = 1)
-    public void testUpdateStudent(){
+    public void testUpdateStudent() {
         Student student = studentManager.GetStudent(1);
         String name = RandomStringUtils.randomAlphabetic(10);
         student.setName(name);
@@ -47,13 +53,20 @@ public class TestStudentManagerInterface extends AbstractTestNGSpringContextTest
     }
 
     @Test(priority = 2)
-    public void testGetStudent(){
+    public void testGetStudent() {
         Student student = studentManager.GetStudent(1);
         Assert.assertNotNull(student);
     }
 
     @Test(priority = 3)
-    public void testDeleteStudent(){
+    public void testGetStudentList() {
+        List<Student> studentList = studentManager.GetStudentList();
+        Assert.assertNotNull(studentList);
+        Assert.assertTrue(studentList.size() >= 0);
+    }
+
+    @Test(priority = 4)
+    public void testDeleteStudent() {
         int rows = studentManager.DeleteStudent(1);
         Assert.assertTrue(rows == 1);
     }
