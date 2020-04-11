@@ -6,6 +6,7 @@ import com.haiming.dao.Student;
 import com.haiming.interfaces.IStudentManager;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -27,6 +28,7 @@ import java.util.Random;
 public class TestStudentManagerInterface extends AbstractTestNGSpringContextTests {
 
     @Autowired
+    @Qualifier("MockStudentManager")
     IStudentManager studentManager;
 
     @Test(priority = 0)
@@ -37,8 +39,8 @@ public class TestStudentManagerInterface extends AbstractTestNGSpringContextTest
         student.setTelephone("2342342334");
         student.setAddress("广州市天河区");
         student.setGender("M");
-        int rows = studentManager.CreateStudent(student);
-        Assert.assertTrue(rows == 1);
+        Student createdStudent = studentManager.CreateStudent(student);
+        Assert.assertNotNull(createdStudent.getId());
     }
 
     @Test(priority = 1)

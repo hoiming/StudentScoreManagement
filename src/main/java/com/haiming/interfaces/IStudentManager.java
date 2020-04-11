@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IStudentManager {
 
-    int CreateStudent(Student student);
+    Student CreateStudent(Student student);
 
     int DeleteStudent(int id);
 

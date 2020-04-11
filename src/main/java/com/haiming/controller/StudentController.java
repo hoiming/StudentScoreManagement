@@ -5,6 +5,8 @@ import com.haiming.interfaces.IStudentManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,5 +21,10 @@ public class StudentController {
     @GetMapping("/students")
     public List<Student> list(){
         return studentManager.GetStudentList();
+    }
+
+    @PostMapping("/students/create")
+    public Student CreateStudent(@RequestBody Student student){
+        return studentManager.CreateStudent(student);
     }
 }

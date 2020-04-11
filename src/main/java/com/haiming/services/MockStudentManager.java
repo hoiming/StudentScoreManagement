@@ -11,8 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-@Scope("singleton")
+@Service("MockStudentManager")
+//@Scope("singleton")
 public class MockStudentManager implements IStudentManager {
     private List<Student> studentList = new ArrayList<Student>();
     public MockStudentManager(){
@@ -26,9 +26,10 @@ public class MockStudentManager implements IStudentManager {
         studentList.add(student);
     }
     @Override
-    public int CreateStudent(Student student) {
+    public Student CreateStudent(Student student) {
+        student.setId(1);
         studentList.add(student);
-        return 1;
+        return student;
     }
 
     @Override
