@@ -3,6 +3,7 @@ package com.haiming.services;
 import com.haiming.dao.Course;
 import com.haiming.interfaces.ICourseManager;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,14 +11,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Qualifier("TestCourseManager")
 public class MockCouseManagement implements ICourseManager {
 
     private List<Course> courseList = new ArrayList<Course>();
 
     @Override
-    public int CreateCourse(Course course) {
+    public Course CreateCourse(Course course) {
+        course.setId(1);
         courseList.add(course);
-        return 1;
+        return course;
     }
 
     @Override
@@ -47,5 +50,10 @@ public class MockCouseManagement implements ICourseManager {
             return courseOptional.get();
         }
         return null;
+    }
+
+    @Override
+    public List<Course> GetCourseList() {
+        return courseList;
     }
 }

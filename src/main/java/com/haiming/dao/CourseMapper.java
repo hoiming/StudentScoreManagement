@@ -8,14 +8,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Generated;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.UpdateProvider;
+
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
@@ -47,6 +41,7 @@ public interface CourseMapper {
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.1989501+08:00", comments="Source Table: course")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
+    @Options(useGeneratedKeys = true, keyProperty = "record.id")
     int insert(InsertStatementProvider<Course> insertStatement);
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.1989501+08:00", comments="Source Table: course")
@@ -89,6 +84,7 @@ public interface CourseMapper {
     }
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.1989501+08:00", comments="Source Table: course")
+    @Options(useGeneratedKeys = true, keyProperty = "record.id")
     default int insert(Course record) {
         return MyBatis3Utils.insert(this::insert, record, course, c ->
             c.map(id).toProperty("id")

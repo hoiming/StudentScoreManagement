@@ -1,18 +1,21 @@
 package com.haiming.test;
 
+import com.haiming.config.TestConfig;
 import com.haiming.dao.Course;
 import com.haiming.interfaces.ICourseManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Test
-@ContextConfiguration(locations = "classpath:spring-config.xml")
+@ContextConfiguration(classes = TestConfig.class)
 public class TestCourseManagementInterface extends AbstractTestNGSpringContextTests {
 
     @Autowired
+    @Qualifier("TestCourseManager")
     private ICourseManager courseManager;
 
     @Test(priority = 0)
@@ -21,8 +24,8 @@ public class TestCourseManagementInterface extends AbstractTestNGSpringContextTe
         course.setTeachername("孙微微");
         course.setCoursename("操作系统");
         course.setId(1);
-        int rows = courseManager.CreateCourse(course);
-        Assert.assertTrue(rows == 1);
+        Course newCourse = courseManager.CreateCourse(course);
+        Assert.assertNotNull(newCourse.getId());
     }
 
     @Test(priority = 1)
