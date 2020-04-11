@@ -45,12 +45,13 @@ public class StudentManager implements IStudentManager {
 
     @Override
     public int UpdateStudent(Student student) {
-        return 0;
+        return studentMapper.updateByPrimaryKey(student);
     }
 
     @Override
     public Student GetStudent(int id) {
-        return null;
+        Student student = studentMapper.selectByPrimaryKey(id).orElse(null);
+        return student;
     }
 
     @Override
