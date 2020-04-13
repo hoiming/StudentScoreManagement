@@ -2,12 +2,13 @@ package com.haiming.interfaces;
 
 import com.haiming.dao.Course;
 import com.haiming.dao.Student;
+import com.haiming.dao.StudentCourseScore;
 
 public interface IScoreManager {
 
-    int CreateScore(Student student, Course course, int score);
+    StudentCourseScore CreateScore(Student student, Course course, int score);
 
-    int UpdateScore(Student student, Course course, int score);
+    StudentCourseScore UpdateScore(int score_id, Student student, Course course, int score);
 
 
 }
