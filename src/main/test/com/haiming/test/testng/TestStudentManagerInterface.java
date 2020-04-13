@@ -1,4 +1,4 @@
-package com.haiming.test;
+package com.haiming.test.testng;
 
 import com.haiming.config.AppConfig;
 import com.haiming.config.TestConfig;

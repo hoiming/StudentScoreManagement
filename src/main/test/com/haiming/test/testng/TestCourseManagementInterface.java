@@ -1,4 +1,4 @@
-package com.haiming.test;
+package com.haiming.test.testng;
 
 import com.haiming.config.TestConfig;
 import com.haiming.dao.Course;
