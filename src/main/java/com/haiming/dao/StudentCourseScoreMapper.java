@@ -13,14 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.SqlBuilder;
@@ -56,6 +49,7 @@ public interface StudentCourseScoreMapper {
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-04-05T17:56:51.2019481+08:00", comments = "Source Table: student_course_score")
     @InsertProvider(type = SqlProviderAdapter.class, method = "insert")
+    @Options(useGeneratedKeys = true, keyProperty = "record.id")
     int insert(InsertStatementProvider<StudentCourseScore> insertStatement);
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-04-05T17:56:51.2019481+08:00", comments = "Source Table: student_course_score")
@@ -78,6 +72,10 @@ public interface StudentCourseScoreMapper {
             @Result(column = "studentName", property = "studentName", jdbcType = JdbcType.VARCHAR)
     })
     Optional<StudentCourseScoreFull> selectOneFullById(SelectStatementProvider selectStatement);
+
+    @ResultMap("StudentCourseScoreFullResult")
+    List<StudentCourseScoreFull> SelectListByStudentId(SelectStatementProvider selectStatement);
+
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-04-05T17:56:51.2019481+08:00", comments = "Source Table: student_course_score")
     @SelectProvider(type = SqlProviderAdapter.class, method = "select")
@@ -111,6 +109,7 @@ public interface StudentCourseScoreMapper {
     }
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-04-05T17:56:51.2019481+08:00", comments = "Source Table: student_course_score")
+    @Options(useGeneratedKeys = true, keyProperty = "record.id")
     default int insert(StudentCourseScore record) {
         return MyBatis3Utils.insert(this::insert, record, studentCourseScore, c ->
                 c.map(id).toProperty("id")
@@ -144,6 +143,7 @@ public interface StudentCourseScoreMapper {
     default Optional<StudentCourseScore> selectOne(SelectDSLCompleter completer) {
         return MyBatis3Utils.selectOne(this::selectOne, selectList, studentCourseScore, completer);
     }
+
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-04-05T17:56:51.2029469+08:00", comments = "Source Table: student_course_score")
     default List<StudentCourseScore> select(SelectDSLCompleter completer) {

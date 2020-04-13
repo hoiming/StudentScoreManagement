@@ -1,4 +1,4 @@
-package com.haiming.services;
+package com.haiming.services.mock;
 
 import com.haiming.dao.Course;
 import com.haiming.interfaces.ICourseManager;

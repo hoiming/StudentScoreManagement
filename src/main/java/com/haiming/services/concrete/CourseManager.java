@@ -1,4 +1,4 @@
-package com.haiming.services;
+package com.haiming.services.concrete;
 
 import com.haiming.dao.Course;
 import com.haiming.dao.CourseMapper;

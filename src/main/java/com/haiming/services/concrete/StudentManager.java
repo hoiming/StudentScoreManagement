@@ -1,4 +1,4 @@
-package com.haiming.services;
+package com.haiming.services.concrete;
 
 import com.haiming.dao.Student;
 import com.haiming.dao.StudentDynamicSqlSupport;

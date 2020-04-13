@@ -1,4 +1,4 @@
-package com.haiming.services;
+package com.haiming.services.mock;
 
 import com.haiming.dao.Student;
 import com.haiming.interfaces.IStudentManager;
