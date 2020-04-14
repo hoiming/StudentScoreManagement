@@ -73,9 +73,13 @@ public interface StudentCourseScoreMapper {
     })
     Optional<StudentCourseScoreFull> selectOneFullById(SelectStatementProvider selectStatement);
 
+    @SelectProvider(type = SqlProviderAdapter.class, method = "select")
     @ResultMap("StudentCourseScoreFullResult")
     List<StudentCourseScoreFull> SelectListByStudentId(SelectStatementProvider selectStatement);
 
+    @SelectProvider(type = SqlProviderAdapter.class, method = "select")
+    @ResultMap("StudentCourseScoreFullResult")
+    List<StudentCourseScoreFull> SelectListByCourseId(SelectStatementProvider selectStatement);
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-04-05T17:56:51.2019481+08:00", comments = "Source Table: student_course_score")
     @SelectProvider(type = SqlProviderAdapter.class, method = "select")

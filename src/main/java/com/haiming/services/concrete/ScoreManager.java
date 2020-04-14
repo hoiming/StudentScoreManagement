@@ -92,7 +92,7 @@ public class ScoreManager implements IScoreManager {
                 .join(StudentDynamicSqlSupport.student).on(studentCourseScore.studentId, equalTo(StudentDynamicSqlSupport.id))
                 .where(studentCourseScore.courseId, isEqualTo(course_id))
                 .build().render(RenderingStrategies.MYBATIS3);
-        List<StudentCourseScoreFull> fullScoreList = mapper.SelectListByStudentId(selectStatementProvider);
+        List<StudentCourseScoreFull> fullScoreList = mapper.SelectListByCourseId(selectStatementProvider);
         return fullScoreList;
     }
 }
