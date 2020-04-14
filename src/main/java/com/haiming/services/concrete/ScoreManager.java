@@ -41,15 +41,11 @@ public class ScoreManager implements IScoreManager {
 
     @Override
     public StudentCourseScore UpdateScore(int score_id, Student student, Course course, int score) {
-        long count = mapper.count(s -> s.where(studentCourseScore.studentId, isEqualTo(student.getId()))
-                .and(studentCourseScore.courseId, isEqualTo(course.getId())));
-        if(count > 0){
-            return null;
-        }
         StudentCourseScore st_score = new StudentCourseScore();
         st_score.setId(score_id);
         st_score.setCourseId(course.getId());
         st_score.setStudentId(student.getId());
+        st_score.setScore(score);
         mapper.updateByPrimaryKey(st_score);
         return st_score;
     }

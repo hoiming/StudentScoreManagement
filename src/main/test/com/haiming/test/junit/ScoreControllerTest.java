@@ -1,9 +1,7 @@
 package com.haiming.test.junit;
 
 import com.haiming.controller.StudentCourseController;
-import com.haiming.dao.StudentCourseScore;
-import com.haiming.dao.StudentCourseScoreDynamicSqlSupport;
-import com.haiming.dao.StudentCourseScoreFull;
+import com.haiming.dao.*;
 import com.haiming.services.concrete.ScoreManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -88,8 +86,8 @@ public class ScoreControllerTest {
     // 从请求URL和返回值的层面单元测试controller
     @Test
     public void testGetStudentCourseScoreFullListByStudentId() throws Exception {
-        MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(mockHttpServletRequest));
+        //MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
+        //RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(mockHttpServletRequest));
         List<StudentCourseScoreFull> fullScoreList = new ArrayList<StudentCourseScoreFull>();
         StudentCourseScoreFull score = new StudentCourseScoreFull();
         score.setId(1);
@@ -103,6 +101,51 @@ public class ScoreControllerTest {
         mockMvc.perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()", is(1)));
+
+    }
+
+    @Test
+    public void testInputScore() throws Exception {
+        StudentCourseScore score = new StudentCourseScore();
+        score.setStudentId(1);
+        score.setCourseId(1);
+        score.setScore(88);
+        Student student = new Student();
+        student.setId(1);
+        Course course = new Course();
+        course.setId(1);
+        when(scoreManager.CreateScore(any(Student.class), any(Course.class), any(Integer.class))).thenReturn(score);
+        RequestBuilder requestBuilder =  MockMvcRequestBuilders.post("/scores/input")
+                                            .content("{\"studentId\" : 1, \"courseId\": 1, \"score\":88}")
+                                            .contentType(MediaType.APPLICATION_JSON);
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(scoreController).build();
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.score", is(88)));
+
+    }
+
+    @Test
+    public void testUpdateScore() throws Exception {
+        StudentCourseScore score = new StudentCourseScore();
+        score.setStudentId(1);
+        score.setCourseId(1);
+        score.setScore(88);
+        Student student = new Student();
+        student.setId(1);
+        Course course = new Course();
+        course.setId(1);
+        when(scoreManager.UpdateScore(any(Integer.class),any(Student.class), any(Course.class), any(Integer.class)))
+                .thenReturn(score);
+        RequestBuilder requestBuilder =  MockMvcRequestBuilders.post("/scores/update")
+                .content("{\"id\" : 1,\"studentId\" : 1, \"courseId\": 1, \"score\":88}")
+                .contentType(MediaType.APPLICATION_JSON);
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(scoreController).build();
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.score", is(88)));
 
     }
 }
