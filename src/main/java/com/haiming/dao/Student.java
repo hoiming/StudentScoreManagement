@@ -2,24 +2,32 @@ package com.haiming.dao;
 
 import java.util.Date;
 import javax.annotation.Generated;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class Student {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.170983+08:00", comments="Source field: student.id")
     private Integer id;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.1739634+08:00", comments="Source field: student.name")
+    @Size(max = 45)
     private String name;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.1739634+08:00", comments="Source field: student.gender")
+    @Pattern(regexp = "M|F", message = "Only M or F, M for male, F for female")
+    @Size(max = 1, min=1)
     private String gender;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.1749629+08:00", comments="Source field: student.birthday")
     private Date birthday;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.1749629+08:00", comments="Source field: student.telephone")
+    @Size(max = 20)
     private String telephone;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.1749629+08:00", comments="Source field: student.address")
+    @Size(max = 200)
     private String address;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.1739634+08:00", comments="Source field: student.id")

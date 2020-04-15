@@ -3,13 +3,13 @@ package com.haiming.controller;
 import com.haiming.dao.Student;
 import com.haiming.interfaces.IStudentManager;
 import org.apache.ibatis.javassist.NotFoundException;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
-
+import javax.validation.Valid;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -26,7 +26,8 @@ public class StudentController {
     }
 
     @PostMapping("/students/create")
-    public @ResponseBody Student CreateStudent(@RequestBody Student student){
+    public @ResponseBody Student CreateStudent( @RequestBody @Valid Student student, HttpServletResponse response){
+        response.setStatus(201);
         return studentManager.CreateStudent(student);
     }
 
@@ -39,9 +40,9 @@ public class StudentController {
         return student;
     }
 
-    @PostMapping("/students/update")
-    public @ResponseBody void UpdateStudent(@RequestBody Student student, HttpServletResponse response){
-        Student fromDB = studentManager.GetStudent(student.getId());
+    @PostMapping("/students/update/{id}")
+    public @ResponseBody void UpdateStudent(@Valid @RequestBody Student student, @PathVariable Integer id, HttpServletResponse response){
+        Student fromDB = studentManager.GetStudent(id);
         if(student == null){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return ;
