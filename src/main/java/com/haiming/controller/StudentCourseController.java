@@ -52,15 +52,15 @@ public class StudentCourseController {
         return createdScore;
     }
 
-    @PostMapping("/update")
-    public StudentCourseScore UpdateScore(@RequestBody StudentCourseScore score, HttpServletResponse response){
+    @PostMapping("/update/{id}")
+    public StudentCourseScore UpdateScore(@PathVariable Integer id, @RequestBody StudentCourseScore score, HttpServletResponse response){
         if(score.getId() == null)
             return null;
         Student student = new Student();
         student.setId(score.getStudentId());
         Course course = new Course();
         course.setId(score.getCourseId());
-        StudentCourseScore updatedScore = scoreManager.UpdateScore(score.getId(), student, course, score.getScore());
+        StudentCourseScore updatedScore = scoreManager.UpdateScore(id, student, course, score.getScore());
         if(updatedScore == null){
             response.setStatus(400);
         }else

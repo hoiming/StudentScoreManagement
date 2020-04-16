@@ -138,7 +138,7 @@ public class ScoreControllerTest {
         course.setId(1);
         when(scoreManager.UpdateScore(any(Integer.class),any(Student.class), any(Course.class), any(Integer.class)))
                 .thenReturn(score);
-        RequestBuilder requestBuilder =  MockMvcRequestBuilders.post("/scores/update")
+        RequestBuilder requestBuilder =  MockMvcRequestBuilders.post("/scores/update/1")
                 .content("{\"id\" : 1,\"studentId\" : 1, \"courseId\": 1, \"score\":88}")
                 .contentType(MediaType.APPLICATION_JSON);
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(scoreController).build();
@@ -146,6 +146,26 @@ public class ScoreControllerTest {
         mockMvc.perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.score", is(88)));
+
+    }
+
+    @Test
+    public void testUpdateInvalidScore() throws Exception {
+        StudentCourseScore score = new StudentCourseScore();
+        score.setStudentId(1);
+        score.setCourseId(1);
+        score.setScore(88);
+        Student student = new Student();
+        student.setId(1);
+        Course course = new Course();
+        course.setId(1);
+        RequestBuilder requestBuilder =  MockMvcRequestBuilders.post("/scores/update/1")
+                .content("{\"id\" : 1,\"studentId\" : 1, \"courseId\": 1, \"score\":AA}")
+                .contentType(MediaType.APPLICATION_JSON);
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(scoreController).build();
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
     }
 }

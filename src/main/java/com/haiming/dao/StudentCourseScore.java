@@ -1,18 +1,22 @@
 package com.haiming.dao;
 
 import javax.annotation.Generated;
+import javax.validation.constraints.NotBlank;
 
 public class StudentCourseScore {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.1999498+08:00", comments="Source field: student_course_score.id")
     private Integer id;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.2009491+08:00", comments="Source field: student_course_score.course_id")
+    @NotBlank
     private Integer courseId;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.2009491+08:00", comments="Source field: student_course_score.student_id")
+    @NotBlank
     private Integer studentId;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.2009491+08:00", comments="Source field: student_course_score.score")
+    @NotBlank
     private Integer score;
 
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.2009491+08:00", comments="Source field: student_course_score.id")

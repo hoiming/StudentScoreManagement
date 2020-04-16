@@ -29,18 +29,20 @@ public class CourseController {
     }
 
     @PostMapping("/create")
-    public @ResponseBody Course CreateCourse(@RequestBody Course course){
+    public @ResponseBody Course CreateCourse(@RequestBody Course course, HttpServletResponse response){
+        response.setStatus(201);
         return courseManager.CreateCourse(course);
     }
 
-    @PostMapping("/update")
-    public @ResponseBody void UpdateCourse(@RequestBody Course course, HttpServletResponse response){
-        Course fromDB = courseManager.GetCourse(course.getId());
+    @PostMapping("/update/{id}")
+    public @ResponseBody void UpdateCourse(@PathVariable Integer id, @RequestBody Course course, HttpServletResponse response){
+        Course fromDB = courseManager.GetCourse(id);
         if(fromDB == null){
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
         BeanUtils.copyProperties(course, fromDB);
+        response.setStatus(200);
         courseManager.UpdateCourse(fromDB);
     }
 }
