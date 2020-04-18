@@ -89,4 +89,9 @@ public class Student {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public String toString(){
+        return "id: " + id + ", name: " + name + ", gender: " + gender + ", birthday: " + birthday
+                + ", telephone: " + telephone + ", address: " + address;
+    }
 }

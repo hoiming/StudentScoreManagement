@@ -32,5 +32,8 @@ public class StudentCourseScoreFull extends StudentCourseScore{
 
     private String studentName;
 
-
+    public String toString(){
+        return "id: " + super.getId() + ", student_id: " + super.getStudentId() + ", course_id: " + super.getCourseId()
+                + ", studentName: " + studentName + ", courseName: " + courseName;
+    }
 }

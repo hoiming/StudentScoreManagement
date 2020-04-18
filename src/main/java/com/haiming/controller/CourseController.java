@@ -2,6 +2,8 @@ package com.haiming.controller;
 
 import com.haiming.dao.Course;
 import com.haiming.interfaces.ICourseManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
+    private Logger logger = LoggerFactory.getLogger(CourseController.class);
 
     @Autowired
     @Qualifier("ConcreteCourseManager")
@@ -30,6 +33,7 @@ public class CourseController {
 
     @PostMapping("/create")
     public @ResponseBody Course CreateCourse(@RequestBody Course course, HttpServletResponse response){
+        logger.debug("Requested object: " + course.toString());
         response.setStatus(201);
         return courseManager.CreateCourse(course);
     }

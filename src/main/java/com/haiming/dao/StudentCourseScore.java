@@ -58,4 +58,8 @@ public class StudentCourseScore {
     public void setScore(Integer score) {
         this.score = score;
     }
+
+    public String toString(){
+        return "id: " + id + ", student_id: " + studentId + ", course_id: " + courseId;
+    }
 }

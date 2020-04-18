@@ -5,6 +5,8 @@ import com.haiming.dao.Student;
 import com.haiming.dao.StudentCourseScore;
 import com.haiming.dao.StudentCourseScoreFull;
 import com.haiming.interfaces.IScoreManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.util.List;
 @RequestMapping("/scores")
 @RestController
 public class StudentCourseController {
+
+    private Logger logger = LoggerFactory.getLogger(StudentCourseController.class);
 
     @Autowired
     @Qualifier("ConcreteScoreManager")
@@ -44,6 +48,7 @@ public class StudentCourseController {
         student.setId(score.getStudentId());
         Course course = new Course();
         course.setId(score.getCourseId());
+        logger.debug("Requested object: " + score);
         StudentCourseScore createdScore = scoreManager.CreateScore(student, course, score.getScore());
         if(createdScore == null){
             response.setStatus(400);

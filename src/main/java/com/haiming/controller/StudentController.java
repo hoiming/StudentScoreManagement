@@ -5,6 +5,8 @@ import com.haiming.interfaces.IStudentManager;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +17,8 @@ import java.util.List;
 
 @RestController
 public class StudentController {
+
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     @Autowired
     @Qualifier("ConcreteStudentManager")
@@ -27,6 +31,7 @@ public class StudentController {
 
     @PostMapping("/students/create")
     public @ResponseBody Student CreateStudent( @RequestBody @Valid Student student, HttpServletResponse response){
+        logger.debug("Requested object: " + student);
         response.setStatus(201);
         return studentManager.CreateStudent(student);
     }

@@ -47,4 +47,8 @@ public class Course {
     public void setTeachername(String teachername) {
         this.teachername = teachername;
     }
+
+    public String toString(){
+        return "id: " + id +", courseName: " + coursename + ", teacherName: " + teachername;
+    }
 }
