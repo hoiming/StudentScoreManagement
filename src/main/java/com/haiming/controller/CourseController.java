@@ -1,5 +1,6 @@
 package com.haiming.controller;
 
+import com.haiming.aspect.LoggingAspect;
 import com.haiming.dao.Course;
 import com.haiming.interfaces.ICourseManager;
 import org.slf4j.Logger;
@@ -21,6 +22,9 @@ public class CourseController {
     @Qualifier("ConcreteCourseManager")
     private ICourseManager courseManager;
 
+    @Autowired
+    private LoggingAspect loggingAspect;
+
     @GetMapping("")
     public @ResponseBody List<Course> CourseList(){
         return courseManager.GetCourseList();
@@ -33,7 +37,8 @@ public class CourseController {
 
     @PostMapping("/create")
     public @ResponseBody Course CreateCourse(@RequestBody Course course, HttpServletResponse response){
-        logger.debug("Requested object: " + course.toString());
+        //logger.debug("Requested object: " + course.toString());
+        logger.debug(loggingAspect.toString());
         response.setStatus(201);
         return courseManager.CreateCourse(course);
     }
