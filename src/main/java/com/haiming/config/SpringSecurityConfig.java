@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.inMemoryAuthentication()
                 .withUser("user").password("{noop}password")
@@ -23,11 +22,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("admin").password("{noop}password").roles("USER", "ADMIN");
     }
 
+
     protected void configure(HttpSecurity http) throws Exception{
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/courses").denyAll()
+        http
+                .httpBasic()
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/courses").hasRole("USER")
+                .anyRequest().permitAll()
                 .and()
                 .csrf().disable()
                 .formLogin().disable();
-    }
+     }
 }
