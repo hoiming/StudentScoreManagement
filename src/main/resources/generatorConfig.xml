@@ -13,5 +13,6 @@
         <table tableName="student" />
         <table tableName="course" />
         <table tableName="student_course_score" />
+        <table tableName="user"/>
     </context>
 </generatorConfiguration>
