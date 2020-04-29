@@ -33,8 +33,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .roles("USER")
 //                .and()
 //                .withUser("admin").password("{noop}password").roles("USER", "ADMIN");
-        auth.userDetailsService(userDetailsService);
-                //.passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
     }
 
 
