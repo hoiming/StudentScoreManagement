@@ -2,6 +2,7 @@ package com.haiming.services.mock;
 
 import com.haiming.dao.Course;
 import com.haiming.interfaces.ICourseManager;
+import com.haiming.viewmodels.CoursesViewModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,13 @@ public class MockCouseManagement implements ICourseManager {
     }
 
     @Override
-    public List<Course> GetCourseList() {
-        return courseList;
+    public CoursesViewModel GetCourseList(int pageIndex, int pageSize) {
+        List<Course> sliced = courseList.subList(pageIndex, pageSize);
+        CoursesViewModel viewModel = new CoursesViewModel();
+        viewModel.setPageIndex(pageIndex + pageSize);
+        viewModel.setCourses(sliced);
+        return viewModel;
     }
+
+
 }

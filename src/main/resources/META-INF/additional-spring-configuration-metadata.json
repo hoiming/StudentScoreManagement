@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "courses.pageSize",
+      "type": "java.lang.Integer",
+      "description": "How many course item should be retrieved in one go"
+    }
+  ]
+}

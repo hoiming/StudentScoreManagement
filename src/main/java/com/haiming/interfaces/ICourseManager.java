@@ -1,6 +1,7 @@
 package com.haiming.interfaces;
 
 import com.haiming.dao.Course;
+import com.haiming.viewmodels.CoursesViewModel;
 
 import java.util.List;
 
@@ -14,5 +15,5 @@ public interface ICourseManager {
 
     Course GetCourse(int id);
 
-    List<Course> GetCourseList();
+    CoursesViewModel GetCourseList(int pageIndex, int pageSize);
 }

@@ -1,8 +1,10 @@
 package com.haiming.services.concrete;
 
 import com.haiming.dao.Course;
+import com.haiming.dao.CourseDynamicSqlSupport;
 import com.haiming.dao.CourseMapper;
 import com.haiming.interfaces.ICourseManager;
+import com.haiming.viewmodels.CoursesViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,11 @@ public class CourseManager implements ICourseManager {
     }
 
     @Override
-    public List<Course> GetCourseList() {
-        return courseMapper.select(c -> c.where());
+    public CoursesViewModel GetCourseList(int pageIndex, int pageSize) {
+        List<Course> courses = courseMapper.select(c -> c.where().orderBy(CourseDynamicSqlSupport.id).limit(pageSize).offset(pageIndex));
+        CoursesViewModel viewModel = new CoursesViewModel();
+        viewModel.setPageIndex(pageIndex + pageSize);
+        viewModel.setCourses(courses);
+        return viewModel;
     }
 }

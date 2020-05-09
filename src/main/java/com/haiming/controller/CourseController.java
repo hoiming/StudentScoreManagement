@@ -1,8 +1,10 @@
 package com.haiming.controller;
 
 import com.haiming.aspect.LoggingAspect;
+import com.haiming.beans.CoursesProps;
 import com.haiming.dao.Course;
 import com.haiming.interfaces.ICourseManager;
+import com.haiming.viewmodels.CoursesViewModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -25,9 +27,13 @@ public class CourseController {
     @Autowired
     private LoggingAspect loggingAspect;
 
+    @Autowired
+    private CoursesProps props;
+
+
     @GetMapping("")
-    public @ResponseBody List<Course> CourseList(){
-        return courseManager.GetCourseList();
+    public @ResponseBody CoursesViewModel CourseList(@RequestParam int pageIndex){
+        return courseManager.GetCourseList(pageIndex, props.getPageSize());
     }
 
     @GetMapping("/{id}")
