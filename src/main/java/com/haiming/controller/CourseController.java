@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -37,8 +38,12 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody Course GetCourse(@PathVariable Integer id){
-        return courseManager.GetCourse(id);
+    public ResponseEntity<Course> GetCourse(@PathVariable Integer id){
+        Course course = courseManager.GetCourse(id);
+        if(course == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(course);
     }
 
     @PostMapping("/create")
