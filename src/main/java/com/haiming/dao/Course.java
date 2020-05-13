@@ -1,10 +1,12 @@
 package com.haiming.dao;
 
+import org.springframework.hateoas.EntityModel;
+
 import javax.annotation.Generated;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 
-public class Course {
+public class Course extends EntityModel {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.1979503+08:00", comments="Source field: course.id")
     private Integer id;
 

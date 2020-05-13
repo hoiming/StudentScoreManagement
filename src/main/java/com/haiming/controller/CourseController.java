@@ -10,11 +10,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping("/courses")
@@ -33,8 +38,21 @@ public class CourseController {
 
 
     @GetMapping("")
-    public @ResponseBody CoursesViewModel CourseList(@RequestParam int pageIndex){
-        return courseManager.GetCourseList(pageIndex, props.getPageSize());
+    public @ResponseBody PagedModel<Course> CourseList(@RequestParam int pageIndex){
+        CoursesViewModel viewModel = courseManager.GetCourseList(pageIndex, props.getPageSize());
+        long totalElements = courseManager.CoursesSize();
+        long size = props.getPageSize();
+        PagedModel.PageMetadata pageMetadata =
+                new PagedModel.PageMetadata(size, pageIndex, totalElements,
+                        totalElements / size);
+        PagedModel<Course> pagedModel = PagedModel.wrap(viewModel.getCourses(), pageMetadata);
+        for(Course course : viewModel.getCourses()){
+            int id = course.getId();
+            Link selfLink = linkTo(CourseController.class).slash(id).withSelfRel();
+            course.add(selfLink);
+        }
+
+        return pagedModel;
     }
 
     @GetMapping("/{id}")

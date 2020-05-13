@@ -16,4 +16,6 @@ public interface ICourseManager {
     Course GetCourse(int id);
 
     CoursesViewModel GetCourseList(int pageIndex, int pageSize);
+
+    long CoursesSize();
 }

@@ -62,5 +62,10 @@ public class MockCouseManagement implements ICourseManager {
         return viewModel;
     }
 
+    @Override
+    public long CoursesSize() {
+        return 0;
+    }
+
 
 }

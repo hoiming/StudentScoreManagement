@@ -47,4 +47,9 @@ public class CourseManager implements ICourseManager {
         viewModel.setCourses(courses);
         return viewModel;
     }
+
+    @Override
+    public long CoursesSize() {
+        return courseMapper.count(c -> c.where());
+    }
 }
