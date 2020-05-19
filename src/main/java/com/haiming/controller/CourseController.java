@@ -4,6 +4,7 @@ import com.haiming.aspect.LoggingAspect;
 import com.haiming.beans.CoursesProps;
 import com.haiming.dao.Course;
 import com.haiming.interfaces.ICourseManager;
+import com.haiming.services.concrete.CourseMessagingService;
 import com.haiming.viewmodels.CoursesViewModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,9 @@ public class CourseController {
     @Autowired
     private CoursesProps props;
 
+    @Autowired
+    private CourseMessagingService courseMessagingService;
+
 
     @GetMapping("")
     public @ResponseBody PagedModel<Course> CourseList(@RequestParam int pageIndex){
@@ -66,6 +70,7 @@ public class CourseController {
         if(course == null){
             return ResponseEntity.notFound().build();
         }
+        courseMessagingService.sendCourse(course);
         return ResponseEntity.ok(course);
     }
 

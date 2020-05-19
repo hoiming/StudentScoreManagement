@@ -1,0 +1,10 @@
+courses:
+  pageSize: 8
+
+
+spring:
+  rabbitmq:
+    host: 192.168.1.103
+    port: 5672
+    username: foobar
+    password: 123456

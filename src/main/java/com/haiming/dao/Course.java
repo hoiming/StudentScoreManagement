@@ -5,8 +5,9 @@ import org.springframework.hateoas.EntityModel;
 import javax.annotation.Generated;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
-public class Course extends EntityModel {
+public class Course extends EntityModel implements Serializable {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-04-05T17:56:51.1979503+08:00", comments="Source field: course.id")
     private Integer id;
 
